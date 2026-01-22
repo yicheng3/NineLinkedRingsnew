@@ -1221,12 +1221,31 @@ function displaySteps()
 //-----------------------------------------------
 // enable click while click on stick click area
 //-----------------------------------------------
+//-----------------------------------------------
+// enable click while click on stick click area
+// Modified for Tablet: Anti-Ghost Click Version
+//-----------------------------------------------
 function enableRingStickClick()
 {
+	// 判斷是否為觸控裝置
+	var isTouch = 'ontouchstart' in document.documentElement;
+	// 平板只聽 touchstart，電腦只聽 click。絕對不混用。
+	var eventType = isTouch ? 'touchstart' : 'click';
+
 	for(var id = 0; id < numOfRings; id++) {
-		gClickArea[id].on('click tap', function() {
-            // [新增這行] 如果環正在動，就直接無視這次點擊，防止卡死
-            if (typeof gRingMoving !== 'undefined' && gRingMoving) return;
+		// 先移除舊的監聽，保險起見
+		gClickArea[id].off('click tap touchstart');
+
+		gClickArea[id].on(eventType, function(evt) {
+			// [關鍵] 如果是觸控，阻止瀏覽器發送後續的 "Ghost Click"
+			// 同時這也能防止連點兩下造成的縮放
+			if(isTouch && evt) {
+				evt.preventDefault(); 
+				if(evt.stopPropagation) evt.stopPropagation();
+			}
+
+			// 再次確認：如果環正在動，絕對不執行
+			if (typeof gRingMoving !== 'undefined' && gRingMoving) return;
 
 			var id = this.id;
 			if(id != 0 && (getLeftmostUpperRing()+1) != id) {
@@ -1240,14 +1259,16 @@ function enableRingStickClick()
 //----------------
 // disable click 
 //----------------
+//----------------
+// disable click 
+//----------------
 function disableRingStickClick()
 {
 	for(var id = 0; id < numOfRings; id++) {
-		// 這裡一定要同時把 tap 也關掉，不然動畫跑的時候手指還能點
-		gClickArea[id].off('click tap'); 
+		// 徹底移除所有可能的點擊監聽
+		gClickArea[id].off('click tap touchstart');
 	}
 }
-
 //-----------------------------------------------------
 // enable change cursor style while move on stick bar
 //-----------------------------------------------------
