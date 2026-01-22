@@ -60,7 +60,7 @@
 	</tr>
 	<tr>
 	<td id="textMode" align="right">Play Mode:</td>
-	<td><select id="mode" onchange="setPlayMode(this.value);">
+	<td><select id="mode" onchange="this.blur(); setPlayMode(this.value);">
 		<option value="0">All Rings Down</option>
 		<option value="1">All Rings Up</option>
 	</select></td>
