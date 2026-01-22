@@ -49,7 +49,10 @@ var BAR_BOARD_STROKE_COLOR = "#8899AA";
 //------------------
 // global variable
 //------------------
-var numOfRings = 5; //number of rings 
+var numOfRings = 3; //number of rings 
+var gStepCount = 0;       // 目前步數
+var gMoveHistory = [];    // 歷史紀錄堆疊
+var gIsUndoing = false;   // 判斷是否正在執行「上一步」
 var playMode = 0;   //0:goal for all rings down, 1:goal for all rings up
 
 var timeLevel = 2;  //medium
