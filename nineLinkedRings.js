@@ -2159,8 +2159,16 @@ function setTimeOutValue()
 //--------------------
 function resetButton()
 {
-	initRingState()
-	createLinkedRings();
+    if(gRingMoving) return;
+    
+    // --- 修改開始：歸零 ---
+    gStepCount = 0;
+    gMoveHistory = [];
+    updateStepDisplay();
+    // --- 修改結束 ---
+
+    initGame();
+    ringLayer.draw();
 }
 
 //---------------------
