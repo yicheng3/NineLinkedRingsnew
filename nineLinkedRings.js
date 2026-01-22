@@ -2436,3 +2436,28 @@ function colorSofter(color, softerValue)
 	return ("#" + colorR + colorG + colorB);
 }
 	
+// ==========================================
+// 新增功能：上一步 (Undo)
+// ==========================================
+function undoMove() {
+    // 如果沒有歷史紀錄，或是正在自動演示中，就不能按
+    if (gMoveHistory.length === 0 || gRingMoving) return;
+
+    gIsUndoing = true; // 標記：現在正在倒帶
+    
+    var lastRingId = gMoveHistory.pop(); // 取出最後移動的環
+    moveRing(lastRingId, 1); // 反向移動回去
+    
+    gStepCount--; // 扣除原本那一步的計數
+    
+    gIsUndoing = false; // 標記結束
+    
+    updateStepDisplay(); // 更新畫面文字
+}
+
+// ==========================================
+// 新增功能：更新步數顯示
+// ==========================================
+function updateStepDisplay() {
+    writeMessage("目前步數: " + gStepCount);
+}
