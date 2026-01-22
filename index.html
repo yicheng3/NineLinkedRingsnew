@@ -48,7 +48,7 @@
 <table id="selectTable"  border="0">
 	<tr>
 	<td id="textRings" align="right">Rings:</td>
-	<td><select id="rings" onchange="setNumOfRings(this.value);">
+	<td><select id="rings" onchange="this.blur(); setNumOfRings(this.value);">
 		<option value="3">3</option>
 		<option value="4">4</option>
 		<option value="5">5</option>
