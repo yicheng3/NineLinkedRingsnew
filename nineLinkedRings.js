@@ -1241,7 +1241,8 @@ function enableRingStickClick()
 function disableRingStickClick()
 {
 	for(var id = 0; id < numOfRings; id++) {
-		gClickArea[id].off('click');
+		// 這裡一定要同時把 tap 也關掉，不然動畫跑的時候手指還能點
+		gClickArea[id].off('click tap'); 
 	}
 }
 
