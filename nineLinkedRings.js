@@ -1314,6 +1314,26 @@ function disableRingStickCursorStyle()
 //----------------
 function moveRing(id, enableInputAfterFinish)
 {
+    // 1. 防止動畫重疊 (如果在動就不能再動)
+    if(gRingMoving) return;
+
+    // 2. --- 新增：步數與歷史紀錄邏輯 ---
+    if (gIsUndoing) {
+         // 如果正在「上一步」，不增加步數，也不記歷史
+    } else {
+         // 正常操作 (手動或自動)
+         gStepCount++;
+         gMoveHistory.push(id); // 記錄動了哪個環
+    }
+    
+    // 更新畫面上顯示的步數
+    updateStepDisplay();
+    // --------------------------------
+
+    // 3. 鎖定狀態，開始移動
+    gRingMoving = true;
+
+    // 4. 原本的移動指令 (保留您原本的程式碼邏輯)
 	if(ringWorkState[id] == 0) { //move ring Up
 		if(id == 0) {
 			cmdMoveRing0Up(id, enableInputAfterFinish);
