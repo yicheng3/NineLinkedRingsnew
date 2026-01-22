@@ -67,7 +67,7 @@
 	</tr>
 	<tr>
 	<td id="textSpeed" align="right">Speed:</td>
-	<td><select id="speed" onchange="setPlaySpeed(this.value);">
+	<td><select id="speed" onchange="this.blur(); setPlaySpeed(this.value);">
 		<option value="0">very fast</option>
 		<option value="1">fast</option>
 		<option value="2">medium</option>
