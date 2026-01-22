@@ -34,10 +34,13 @@
 		display: none;
 	}
     /* 優化下拉選單在平板上的觸控體驗 */
-    select {
-        height: 30px;
-        font-size: 16px;
-    }
+/* 確保下拉選單可以被手指選取，不會被 body 的設定鎖住 */
+select {
+    font-size: 16px;
+    height: 30px;
+    -webkit-user-select: auto !important; /* 關鍵：允許選單被選取 */
+    user-select: auto !important;
+}
 </style>
 <script src="kineticJS/kinetic-v4.5.0.min.js"></script>
 <script src="nineLinkedRings.js"></script>
