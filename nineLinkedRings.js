@@ -49,10 +49,7 @@ var BAR_BOARD_STROKE_COLOR = "#8899AA";
 //------------------
 // global variable
 //------------------
-var numOfRings = 3; //number of rings 
-var gStepCount = 0;       // 目前步數
-var gMoveHistory = [];    // 歷史紀錄堆疊
-var gIsUndoing = false;   // 判斷是否正在執行「上一步」
+var numOfRings = 5; //number of rings 
 var playMode = 0;   //0:goal for all rings down, 1:goal for all rings up
 
 var timeLevel = 2;  //medium
@@ -1314,26 +1311,6 @@ function disableRingStickCursorStyle()
 //----------------
 function moveRing(id, enableInputAfterFinish)
 {
-    // 1. 防止動畫重疊 (如果在動就不能再動)
-    if(gRingMoving) return;
-
-    // 2. --- 新增：步數與歷史紀錄邏輯 ---
-    if (gIsUndoing) {
-         // 如果正在「上一步」，不增加步數，也不記歷史
-    } else {
-         // 正常操作 (手動或自動)
-         gStepCount++;
-         gMoveHistory.push(id); // 記錄動了哪個環
-    }
-    
-    // 更新畫面上顯示的步數
-    updateStepDisplay();
-    // --------------------------------
-
-    // 3. 鎖定狀態，開始移動
-    gRingMoving = true;
-
-    // 4. 原本的移動指令 (保留您原本的程式碼邏輯)
 	if(ringWorkState[id] == 0) { //move ring Up
 		if(id == 0) {
 			cmdMoveRing0Up(id, enableInputAfterFinish);
@@ -2159,16 +2136,8 @@ function setTimeOutValue()
 //--------------------
 function resetButton()
 {
-    if(gRingMoving) return;
-    
-    // --- 修改開始：歸零 ---
-    gStepCount = 0;
-    gMoveHistory = [];
-    updateStepDisplay();
-    // --- 修改結束 ---
-
-    initGame();
-    ringLayer.draw();
+	initRingState()
+	createLinkedRings();
 }
 
 //---------------------
@@ -2464,28 +2433,3 @@ function colorSofter(color, softerValue)
 	return ("#" + colorR + colorG + colorB);
 }
 	
-// ==========================================
-// 新增功能：上一步 (Undo)
-// ==========================================
-function undoMove() {
-    // 如果沒有歷史紀錄，或是正在自動演示中，就不能按
-    if (gMoveHistory.length === 0 || gRingMoving) return;
-
-    gIsUndoing = true; // 標記：現在正在倒帶
-    
-    var lastRingId = gMoveHistory.pop(); // 取出最後移動的環
-    moveRing(lastRingId, 1); // 反向移動回去
-    
-    gStepCount--; // 扣除原本那一步的計數
-    
-    gIsUndoing = false; // 標記結束
-    
-    updateStepDisplay(); // 更新畫面文字
-}
-
-// ==========================================
-// 新增功能：更新步數顯示
-// ==========================================
-function updateStepDisplay() {
-    writeMessage("目前步數: " + gStepCount);
-}
