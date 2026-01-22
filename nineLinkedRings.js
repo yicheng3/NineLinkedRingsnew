@@ -95,7 +95,7 @@ function init()
 	//just for fixed: chrome sets cursor to text while dragging, why?
 	//http://stackoverflow.com/questions/2745028/chrome-sets-cursor-to-text-while-dragging-why
 	//This will disable any text selection on the page and it seems that browser starts to show custom cursors.
-	document.onselectstart = function(){ return false; } ;
+	//document.onselectstart = function(){ return false; } ;
 
 	restoreRingsInfo();
 	initScreenXY();
