@@ -1224,8 +1224,10 @@ function displaySteps()
 function enableRingStickClick()
 {
 	for(var id = 0; id < numOfRings; id++) {
-		// 同時監聽 click (電腦) 和 tap (平板)
 		gClickArea[id].on('click tap', function() {
+            // [新增這行] 如果環正在動，就直接無視這次點擊，防止卡死
+            if (typeof gRingMoving !== 'undefined' && gRingMoving) return;
+
 			var id = this.id;
 			if(id != 0 && (getLeftmostUpperRing()+1) != id) {
 				drawXSign(id);	
